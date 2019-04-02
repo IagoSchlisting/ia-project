@@ -9,5 +9,10 @@
     <context:annotation-config/>
     <mvc:annotation-driven/>
 
+    <bean name="bancoCasoService" class="com.ia.service.impl.BaseCasoServiceImpl">
+    </bean>
+    <bean name="bancoCasoDao" class="com.ia.dao.impl.BaseCasoDaoImpl">
+        <property name="sessionFactory" ref="sessionFactory"/>
+    </bean>
 
 </beans>
