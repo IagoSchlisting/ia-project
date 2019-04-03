@@ -14,13 +14,14 @@
                 <th> Imp.Avaliação </th>
                 <th> Imp.Oscar </th>
                 <th> Imp.SerRecente </th>
+                <th> Filme </th>
                 <th> Remover </th>
             </tr>
             <c:forEach var="caso" items="${casos}">
                 <tr>
                     <td> ${caso.id} </td>
                     <td> ${caso.companhia} </td>
-                    <td> ${caso.importanciaAvaliacaoa} </td>
+                    <td> ${caso.importanciaAvaliacao} </td>
                     <td> ${caso.importanciaOscar} </td>
                     <td> ${caso.importanciaSerRecente} </td>
                     <td> ${caso.filme} </td>
@@ -29,7 +30,15 @@
             </c:forEach>
         </table>
 
-
+        <div class="col-md-12" style="margin-top: 20px;">
+            <form:form id="casoscontrol" action="/adicionar/casos/fixos" name="user" method="post">
+                <div class="form-group">
+                    <button type="submit" class="btn btn-primary"> Adicionar Casos Fixos </button>
+                </div>
+                <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+                </form:form>
+        </div>
+    </div>
         <div class="panel-footer"> @IA-PROJECT - Iago Machado </div>
     </div>
 <%@ include file="templates/footer.jsp"%>
