@@ -182,12 +182,11 @@
             <artifactId>spring-security-config</artifactId>
             <version>5.0.8.RELEASE</version>
         </dependency>
-
-        <dependency>
-            <groupId>com.opencsv</groupId>
-            <artifactId>opencsv</artifactId>
-            <version>4.1</version>
-        </dependency>
+        <!--<dependency>-->
+            <!--<groupId>com.successfactors.learning.common.java.plateaucommon2</groupId>-->
+            <!--<artifactId>plateaucommon-core</artifactId>-->
+            <!--<version>b1808.6.1</version>-->
+        <!--</dependency>-->
 
     </dependencies>
 

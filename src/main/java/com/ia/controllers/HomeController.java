@@ -5,6 +5,7 @@ import com.ia.models.Avaliacao;
 import com.ia.models.BaseDeCaso;
 import com.ia.models.Companhia;
 import com.ia.service.BaseCasoService;
+import com.plateau.common.core.api.util.file.CSVReader;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -41,6 +42,16 @@ public class HomeController extends BaseController {
     @RequestMapping(value = "/adicionar/casos/fixos", method = RequestMethod.POST)
     public RedirectView adicionarCasosFixos(RedirectAttributes redirectAttributes){
         try{
+
+
+            List<List<String>> records = new ArrayList<>();
+            try (BufferedReader br = new BufferedReader(new FileReader("/sapmnt/home/I500738/Desktop/ia-project/src/resources/casos/casosIA.csv"))) {
+                String line;
+                while ((line = br.readLine()) != null) {
+                    String[] values = line.split(";");
+                    records.add(Arrays.asList(values));
+                }
+            }
 
             BaseDeCaso baseDeCaso = new BaseDeCaso();
             baseDeCaso.setCompanhia(Companhia.NAMORAD);
