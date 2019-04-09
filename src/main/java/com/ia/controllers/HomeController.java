@@ -5,8 +5,7 @@ import com.ia.models.Avaliacao;
 import com.ia.models.BaseDeCaso;
 import com.ia.models.Companhia;
 import com.ia.service.BaseCasoService;
-import com.plateau.common.core.api.util.file.CSVReader;
-import org.springframework.core.io.ClassPathResource;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -45,7 +44,7 @@ public class HomeController extends BaseController {
 
 
             List<List<String>> records = new ArrayList<>();
-            try (BufferedReader br = new BufferedReader(new FileReader("/sapmnt/home/I500738/Desktop/ia-project/src/resources/casos/casosIA.csv"))) {
+            try (BufferedReader br = new BufferedReader(new FileReader("C:\\Users\\i500738\\Desktop\\projects\\ia-project\\casosIA.csv"))) {
                 String line;
                 while ((line = br.readLine()) != null) {
                     String[] values = line.split(";");
@@ -53,13 +52,16 @@ public class HomeController extends BaseController {
                 }
             }
 
-            BaseDeCaso baseDeCaso = new BaseDeCaso();
-            baseDeCaso.setCompanhia(Companhia.NAMORAD);
-            baseDeCaso.setImportanciaAvaliacao(Avaliacao.CINCO);
-            baseDeCaso.setImportanciaOscar(Avaliacao.CINCO);
-            baseDeCaso.setImportanciaSerRecente(Avaliacao.CINCO);
-            baseDeCaso.setFilme("Green Book O guia");
-            this.baseCasoService.addCaso(baseDeCaso);
+            BaseDeCaso baseDeCaso;
+            for(List<String> record : records) {
+                baseDeCaso = new BaseDeCaso();
+                baseDeCaso.setImportanciaAvaliacao(Avaliacao.valueOf(record.get(0).replaceAll("\\s+","")));
+                baseDeCaso.setCompanhia(Companhia.valueOf(record.get(1).replaceAll("\\s+","")));
+                baseDeCaso.setImportanciaOscar(Avaliacao.valueOf(record.get(2).replaceAll("\\s+","")));
+                baseDeCaso.setImportanciaSerRecente(Avaliacao.valueOf(record.get(3).replaceAll("\\s+","")));
+                baseDeCaso.setFilme(record.get(4));
+                this.baseCasoService.addCaso(baseDeCaso);
+            }
 
 
         }catch (Exception e){
