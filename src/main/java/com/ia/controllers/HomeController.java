@@ -11,6 +11,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.servlet.view.RedirectView;
 
@@ -37,6 +38,26 @@ public class HomeController extends BaseController {
         model.addAttribute("casos", this.baseCasoService.listCasos());
         return "banco-casos";
     }
+
+
+
+    @RequestMapping(value = "/adicionar/caso", method = RequestMethod.POST)
+    public RedirectView adicionarCaso(WebRequest request, RedirectAttributes redirectAttributes){
+        try{
+                BaseDeCaso baseDeCaso = new BaseDeCaso();
+                baseDeCaso.setImportanciaAvaliacao(Avaliacao.valueOf(request.getParameter("avaliacao")));
+                baseDeCaso.setCompanhia(Companhia.valueOf(request.getParameter("companhia")));
+                baseDeCaso.setImportanciaOscar(Avaliacao.valueOf(request.getParameter("oscar")));
+                baseDeCaso.setImportanciaSerRecente(Avaliacao.valueOf(request.getParameter("recente")));
+                baseDeCaso.setFilme(request.getParameter("filme"));
+                this.baseCasoService.addCaso(baseDeCaso);
+            redirectAttributes.addFlashAttribute("msg", "Caso adicionado com sucesso!");
+        }catch (Exception e){
+            redirectAttributes.addFlashAttribute("error", e.getMessage());
+        }
+        return new RedirectView("/banco-casos");
+    }
+
 
     @RequestMapping(value = "/adicionar/casos/fixos", method = RequestMethod.POST)
     public RedirectView adicionarCasosFixos(RedirectAttributes redirectAttributes){
@@ -84,6 +105,18 @@ public class HomeController extends BaseController {
     }
 
 
+
+    @RequestMapping(value = "/gerar/recomendacoes" , method = RequestMethod.GET)
+    public String GerarRecomendacoes(Model model){
+
+        List<BaseDeCaso> recomendacoes = new ArrayList<>();
+
+
+        
+
+        model.addAttribute("sugestoes", recomendacoes);
+        return "homepage";
+    }
 
 }
 

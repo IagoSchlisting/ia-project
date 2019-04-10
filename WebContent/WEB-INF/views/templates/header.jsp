@@ -35,7 +35,13 @@
             <a class="navbar-brand" href="/" style="background-color:#767acb; color:#f3f3f3"> Sistema IA </a>
         </div>
 
-        </div><!-- /.navbar-collapse -->
+
+        <ul class="nav navbar-nav">
+            <li><a href="/banco-casos"> Banco de Casos </a></li>
+        </ul>
+
+
+    </div><!-- /.navbar-collapse -->
     </div><!-- /.container-fluid -->
 </nav>
 
