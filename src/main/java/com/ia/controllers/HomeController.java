@@ -107,15 +107,79 @@ public class HomeController extends BaseController {
 
 
     @RequestMapping(value = "/gerar/recomendacoes" , method = RequestMethod.GET)
-    public String GerarRecomendacoes(Model model){
+    public String GerarRecomendacoes(Model model, WebRequest request){
 
-        List<BaseDeCaso> recomendacoes = new ArrayList<>();
+        Avaliacao oscar = Avaliacao.valueOf(request.getParameter("oscar"));
+        Avaliacao avaliacao = Avaliacao.valueOf(request.getParameter("avaliacao"));
+        Avaliacao recente = Avaliacao.valueOf(request.getParameter("recente"));
+        Companhia companhia = Companhia.valueOf(request.getParameter("companhia"));
+
+        List<BaseDeCaso> casos = this.baseCasoService.listCasos();
+        Map<String, Integer> recomendacoes = new HashMap<String, Integer>();
+
+        // Pesos
+        // oscar - 1
+        // avaliacao - 2
+        // recente - 1
+        // companhia - 3
+
+        int semelhanca_oscar;
+        int semelhanca_avalaliacao;
+        int semelhanca_recente;
+        int semelhanca_companhia;
+        int semelhanca_total;
+
+        int aux1;
+        int aux2;
+
+        for(BaseDeCaso caso : casos){
+
+            //Semelhanca Companhia
+            if(caso.getCompanhia() == companhia){
+                semelhanca_companhia = 100;
+            }else{
+                semelhanca_companhia= 0;
+            }
+
+            // Semelhanca Oscar
+            aux1 = this.getEnumIntValue(oscar);
+            aux2 = this.getEnumIntValue(caso.getImportanciaOscar());
+            semelhanca_oscar = 100 - (Math.abs(aux1 - aux2) * 20);
+
+            // Semelhanca Recente
+            aux1 = this.getEnumIntValue(recente);
+            aux2 = this.getEnumIntValue(caso.getImportanciaAvaliacao());
+            semelhanca_recente = 100 - (Math.abs(aux1 - aux2) * 20);
+
+            // Semelhanca Avaliacao
+            aux1 = this.getEnumIntValue(avaliacao);
+            aux2 = this.getEnumIntValue(caso.getImportanciaAvaliacao());
+            semelhanca_avalaliacao = 100 - (Math.abs(aux1 - aux2) * 20);
+
+            semelhanca_total = (semelhanca_oscar + semelhanca_recente + (semelhanca_avalaliacao * 2) + (semelhanca_companhia * 3))/7;
+            recomendacoes.put(caso.getFilme(), semelhanca_total);
+        }
 
 
-        
-
-        model.addAttribute("sugestoes", recomendacoes);
+        model.addAttribute("recomendacoes", recomendacoes);
         return "homepage";
+    }
+
+
+    public Integer getEnumIntValue(Avaliacao v_enum){
+        switch (v_enum){
+            case UM:
+                return 1;
+            case DOIS:
+                return 2;
+            case TRES:
+                return 3;
+            case QUATRO:
+                return 4;
+            case CINCO:
+                return 5;
+        }
+        return 0;
     }
 
 }

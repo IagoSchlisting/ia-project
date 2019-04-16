@@ -8,7 +8,7 @@
 
 
 
-        <form:form id="consulta" action="/gerar/recomendacoes" name="consulta" method="get">
+        <form:form id="consulta" action="/gerar/recomendacoes" name="consulta" method="GET">
 
         <div class="form-group">
             <label for="avaliacao">Para você é importante o filme ser bem avaliado?</label>
@@ -62,6 +62,11 @@
 
         </form:form>
     </div>
+
+
+
+
+
     <div class="panel-footer"> @IA-PROJECT - Iago Machado </div>
  </div>
 <%@ include file="templates/footer.jsp"%>
