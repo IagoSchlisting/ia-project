@@ -116,6 +116,8 @@ public class HomeController extends BaseController {
 
         List<BaseDeCaso> casos = this.baseCasoService.listCasos();
         Map<String, Integer> recomendacoes = new HashMap<String, Integer>();
+        Map<String, Integer> recomendacoes_ordenado = new HashMap<String, Integer>();
+
 
         // Pesos
         // oscar - 1
@@ -148,7 +150,7 @@ public class HomeController extends BaseController {
 
             // Semelhanca Recente
             aux1 = this.getEnumIntValue(recente);
-            aux2 = this.getEnumIntValue(caso.getImportanciaAvaliacao());
+            aux2 = this.getEnumIntValue(caso.getImportanciaSerRecente());
             semelhanca_recente = 100 - (Math.abs(aux1 - aux2) * 20);
 
             // Semelhanca Avaliacao
@@ -160,8 +162,21 @@ public class HomeController extends BaseController {
             recomendacoes.put(caso.getFilme(), semelhanca_total);
         }
 
+        int maior = 0;
+        String key = "";
 
-        model.addAttribute("recomendacoes", recomendacoes);
+        for(int i = 0; i < 5; i++){
+            for(Map.Entry<String, Integer> recomendacao : recomendacoes.entrySet()){
+                if(recomendacao.getValue() > maior){
+                    maior = recomendacao.getValue();
+                    key = recomendacao.getKey();
+                }
+            }
+            recomendacoes.remove(key);
+            recomendacoes_ordenado.put(key.toLowerCase().replaceAll(" ", "_"), maior);
+            maior = 0;
+        }
+        model.addAttribute("recomendacoes", recomendacoes_ordenado);
         return "homepage";
     }
 

@@ -63,7 +63,23 @@
         </form:form>
     </div>
 
+    <div class="col-md-12">
 
+        <table class="table table-striped">
+            <tr>
+                <th> Filme </th>
+                <th> Recomendação </th>
+            </tr>
+
+            <c:forEach var="recomendacao" items="${recomendacoes}">
+                <tr>
+                    <td> <img src="/resources/fotos/${recomendacao.key}.jpg" width="110" height="160"> </td>                           </td>
+                    <td> ${recomendacao.value}% </td>
+                </tr>
+            </c:forEach>
+
+        </table>
+    </div>
 
 
 
