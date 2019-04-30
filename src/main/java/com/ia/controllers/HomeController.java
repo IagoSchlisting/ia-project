@@ -241,6 +241,7 @@ public class HomeController extends BaseController {
         }
 
         int maior = 0;
+        int maior_todos = 0;
         String key = "";
 
         if(recomendacoes.size() <= 5){
@@ -253,6 +254,9 @@ public class HomeController extends BaseController {
                     if(recomendacao.getValue() > maior){
                         maior = recomendacao.getValue();
                         key = recomendacao.getKey();
+                        if(recomendacao.getValue() > maior_todos){
+                            maior_todos = maior;
+                        }
                     }
                 }
                 recomendacoes.remove(key);
@@ -267,6 +271,7 @@ public class HomeController extends BaseController {
         model.addAttribute("recente", request.getParameter("recente"));
         model.addAttribute("companhia", request.getParameter("companhia"));
         model.addAttribute("recomendacoes", recomendacoes_ordenado);
+        model.addAttribute("maior", maior_todos);
         return "homepage";
     }
 
