@@ -63,6 +63,11 @@
                                     <input type="text" class="form-control" name="filme" id="filme" placeholder="Nome do filme">
                                 </div>
 
+                            <div class="form-group">
+                                <label for="filme"> URL da Imagem </label>
+                                <input type="text" class="form-control" name="urlImagem" id="urlImagem" placeholder="URL da imagem do filme">
+                            </div>
+
                                 <div class="form-group">
                                     <label for="avaliacao">Para você é importante o filme ser bem avaliado?</label>
                                     <select class="form-control" id="avaliacao" name="avaliacao">

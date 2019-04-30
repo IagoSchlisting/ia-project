@@ -24,6 +24,16 @@ public class BaseDeCaso {
 
     private String filme;
 
+    private String urlImagem;
+
+    public String getUrlImagem() {
+        return urlImagem;
+    }
+
+    public void setUrlImagem(String urlImagem) {
+        this.urlImagem = urlImagem;
+    }
+
     public Integer getId() {
         return id;
     }

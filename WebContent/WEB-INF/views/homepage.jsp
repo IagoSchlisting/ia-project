@@ -71,7 +71,18 @@
 
                 <div class="col-md-2" style="margin-top: 20px">
                     <table class="table table-striped">
-                        <tr> <td><img src="/resources/fotos/${recomendacao.key}.jpg" width="140" height="180"> </td></tr>
+                        <tr>
+                            <td>
+
+                                <c:if test="${empty recomendacao.url}">
+                                    <img src="/resources/fotos/${recomendacao.key}.jpg" width="140" height="180">
+                                </c:if>
+                                <c:if test="${not empty recomendacao.url}">
+                                    <img src="${recomendacao.url}" width="140" height="180">
+                                </c:if>
+
+                            </td>
+                        </tr>
                         <tr> <td align="center" style="${recomendacao.value.equals(maior) ? 'background-color: #74f58d' : 'background-color: #98dee1'}; border-radius: 3px"><span style="font-size: large">${recomendacao.value}%</span></td></tr>
                     </table>
                 </div>

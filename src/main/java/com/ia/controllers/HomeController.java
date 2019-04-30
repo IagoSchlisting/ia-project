@@ -1,6 +1,7 @@
 package com.ia.controllers;
 import com.fasterxml.jackson.databind.MappingIterator;
 import com.ia.dao.BaseCasoDao;
+import com.ia.dto.RecomendacaoDTO;
 import com.ia.dto.UserDTO;
 import com.ia.models.Avaliacao;
 import com.ia.models.BaseDeCaso;
@@ -128,6 +129,7 @@ public class HomeController extends BaseController {
                 baseDeCaso.setImportanciaOscar(Avaliacao.valueOf(request.getParameter("oscar")));
                 baseDeCaso.setImportanciaSerRecente(Avaliacao.valueOf(request.getParameter("recente")));
                 baseDeCaso.setFilme(request.getParameter("filme"));
+                baseDeCaso.setUrlImagem(request.getParameter("urlImagem"));
                 this.baseCasoService.addCaso(baseDeCaso);
             redirectAttributes.addFlashAttribute("msg", "Caso adicionado com sucesso!");
         }catch (Exception e){
@@ -193,9 +195,15 @@ public class HomeController extends BaseController {
         Companhia companhia = Companhia.valueOf(request.getParameter("companhia"));
 
         List<BaseDeCaso> casos = this.baseCasoService.listCasos();
-        Map<String, Integer> recomendacoes = new HashMap<String, Integer>();
-        Map<String, Integer> recomendacoes_ordenado = new HashMap<String, Integer>();
 
+        List<RecomendacaoDTO> recomendacoes = new ArrayList<>();
+        RecomendacaoDTO recomendacao;
+
+        List<RecomendacaoDTO> recomendacoes_ordenado = new ArrayList<>();
+        RecomendacaoDTO recomendacao_ordenado;
+
+        //Map<String, Integer> recomendacoes = new HashMap<String, Integer>();
+        //Map<String, Integer> recomendacoes_ordenado = new HashMap<String, Integer>();
 
         // Pesos
         // oscar - 1
@@ -237,30 +245,54 @@ public class HomeController extends BaseController {
             semelhanca_avalaliacao = 100 - (Math.abs(aux1 - aux2) * 20);
 
             semelhanca_total = (semelhanca_oscar + semelhanca_recente + (semelhanca_avalaliacao * 2) + (semelhanca_companhia * 3))/7;
-            recomendacoes.put(caso.getFilme(), semelhanca_total);
+
+            recomendacao = new RecomendacaoDTO();
+            recomendacao.setTitle(caso.getFilme());
+            recomendacao.setValue(semelhanca_total);
+            recomendacao.setUrl(caso.getUrlImagem());
+            recomendacoes.add(recomendacao);
+
         }
 
         int maior = 0;
         int maior_todos = 0;
         String key = "";
+        String url = "";
+        String title = "";
+        int td = 0;
+
 
         if(recomendacoes.size() <= 5){
-            for(Map.Entry<String, Integer> recomendacao : recomendacoes.entrySet()){
-                recomendacoes_ordenado.put(recomendacao.getKey().toLowerCase().replaceAll(" ", "_"), recomendacao.getValue());
+            for(RecomendacaoDTO rec : recomendacoes){
+                if(rec.getValue() > maior_todos){maior_todos = rec.getValue();}
+                recomendacao_ordenado = new RecomendacaoDTO();
+                recomendacao_ordenado.setValue(rec.getValue());
+                recomendacao_ordenado.setTitle(rec.getTitle());
+                recomendacao_ordenado.setKey(rec.getTitle().toLowerCase().replaceAll(" ", "_"));
+                recomendacao_ordenado.setUrl(rec.getUrl());
+                recomendacoes_ordenado.add(recomendacao_ordenado);
             }
         }else{
             for(int i = 0; i < 5; i++){
-                for(Map.Entry<String, Integer> recomendacao : recomendacoes.entrySet()){
-                    if(recomendacao.getValue() > maior){
-                        maior = recomendacao.getValue();
-                        key = recomendacao.getKey();
-                        if(recomendacao.getValue() > maior_todos){
+                for(RecomendacaoDTO rec : recomendacoes){
+                    if(rec.getValue() > maior){
+                        maior = rec.getValue();
+                        key = rec.getTitle().toLowerCase().replaceAll(" ", "_");
+                        url = rec.getUrl();
+                        title = rec.getTitle();
+                        td = recomendacoes.indexOf(rec);
+                        if(rec.getValue() > maior_todos){
                             maior_todos = maior;
                         }
                     }
                 }
-                recomendacoes.remove(key);
-                recomendacoes_ordenado.put(key.toLowerCase().replaceAll(" ", "_"), maior);
+                recomendacoes.remove(td);
+                recomendacao_ordenado = new RecomendacaoDTO();
+                recomendacao_ordenado.setValue(maior);
+                recomendacao_ordenado.setTitle(title);
+                recomendacao_ordenado.setKey(key);
+                recomendacao_ordenado.setUrl(url);
+                recomendacoes_ordenado.add(recomendacao_ordenado);
                 maior = 0;
             }
         }
