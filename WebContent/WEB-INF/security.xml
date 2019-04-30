@@ -6,13 +6,13 @@
 
     <http auto-config="true">
         <access-denied-handler error-page="/403" />
-        <intercept-url pattern="/" access="permitAll" />
+        <intercept-url pattern="/" access="hasRole('ROLE_USER')" />
+        <intercept-url pattern="/login" access="permitAll" />
+        <intercept-url pattern="/banco-casos" access="hasRole('ROLE_OWNER')" />
 
-    
         <!--<intercept-url pattern="/user/**" access="hasRole('ROLE_OWNER')" />-->
         <!--<intercept-url pattern="/administracao**" access="hasRole('ROLE_OWNER')" />-->
         <!--<intercept-url pattern="/rel**" access="hasRole('ROLE_OWNER')" />-->
-        <!--<intercept-url pattern="/login" access="permitAll" />-->
         <!--<intercept-url pattern="/resources/**" access="permitAll" />-->
 
         <form-login

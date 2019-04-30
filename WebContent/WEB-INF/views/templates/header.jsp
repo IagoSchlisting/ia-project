@@ -20,13 +20,13 @@
 
 <body>
 
-<%--<c:url value="/logout" var="logoutUrl" />--%>
-<%--<!-- csrt for log out-->--%>
-<%--<form action="${logoutUrl}" method="post" id="logoutForm">--%>
-    <%--<input type="hidden"--%>
-           <%--name="${_csrf.parameterName}"--%>
-           <%--value="${_csrf.token}" />--%>
-<%--</form>--%>
+<c:url value="/logout" var="logoutUrl" />
+<!-- csrt for log out-->
+<form action="${logoutUrl}" method="post" id="logoutForm">
+    <input type="hidden"
+           name="${_csrf.parameterName}"
+           value="${_csrf.token}" />
+</form>
 
 <nav class="navbar navbar-default">
     <div class="container-fluid">
@@ -40,6 +40,18 @@
             <li><a href="/banco-casos"> Banco de Casos </a></li>
         </ul>
 
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav navbar-right">
+                <li class="dropdown">
+                    <a href="/" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" style="color: green"> ${pageContext.request.userPrincipal.name} <span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="javascript:formSubmit()"> Logout </a></li>
+                    </ul>
+                </li>
+            </ul>
+        </div><!-- /.navbar-collapse -->
+        <meta name="${_csrf.parameterName}" content="${_csrf.token}">
 
     </div><!-- /.navbar-collapse -->
     </div><!-- /.container-fluid -->
