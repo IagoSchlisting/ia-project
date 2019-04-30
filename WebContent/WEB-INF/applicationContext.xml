@@ -15,4 +15,10 @@
         <property name="sessionFactory" ref="sessionFactory"/>
     </bean>
 
+    <bean name="userService" class="com.ia.service.impl.UserServiceImpl">
+    </bean>
+    <bean name="userDao" class="com.ia.dao.impl.UserDaoImpl">
+        <property name="sessionFactory" ref="sessionFactory"/>
+    </bean>
+
 </beans>
